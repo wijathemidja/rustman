@@ -10,10 +10,12 @@ fn main() {
     let single_char_string = single_char(&input);
     // Creates a frequency table
     let mut letter_frequency = HashMap::new();
+    let mut char_binary_codes:HashMap<String, Vec<char>> = HashMap::new();
     for char in &single_char_string{
         // Adds each letter as a key to the frequency table
         letter_frequency.insert(char, 0);
     }
+
     for char in &single_char_string{
         for letter in input_string.chars(){
             if letter == *char {
@@ -39,16 +41,49 @@ fn main() {
         let weight = value1 + value2;
         let weight = weight.to_string();
         if key1 == ""{
-            key1 = " ";
+            key1 = "\u{2423}";
         }
         if key2 == ""{
-            key2 = " ";
+            key2 = "\u{2423}";
         }
-        let key = String::from(format!("({}{})", key1, key2));
+        let key1chars:Vec<char> = key1.chars().collect();
+        for char in key1chars{
+            if char_binary_codes.contains_key(&char.to_string()){
+                let mut bc = char_binary_codes[&char.to_string()].clone();
+                bc.reverse();
+                bc.push('0');
+                bc.reverse();
+                char_binary_codes.insert(char.to_string(), bc);
+            } else {
+                char_binary_codes.insert(char.to_string(), vec!['0']);
+            }
+
+        }
+        let key2chars:Vec<char> = key2.chars().collect();
+        for char in key2chars{
+            if char_binary_codes.contains_key(&char.to_string()){
+                let mut bc = char_binary_codes[&char.to_string()].clone();
+                bc.reverse();
+                bc.push('1');
+                bc.reverse();
+                char_binary_codes.insert(char.to_string(), bc);
+            } else {
+                char_binary_codes.insert(char.to_string(), vec!['1']);
+            }
+
+        }
+        let key = String::from(format!("{}{}", key1, key2));
         let key_weight_list = vec![key, weight];
         huffman_list[huffman_len-2] = key_weight_list;
         huffman_list.remove(huffman_len - 1);
         huffman_list = order_by_value_list(huffman_list);
+    }
+    for (key, value) in char_binary_codes{
+        let mut string_number = String::new();
+        for number in value{
+            string_number.push(number);
+        }
+        println!("{} has code {}",key, string_number);
     }
 }
 
