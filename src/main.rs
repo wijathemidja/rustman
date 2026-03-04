@@ -1,7 +1,5 @@
 use std::collections::HashMap;
 use std::{io, vec};
-use std::ptr::null;
-
 fn main() {
     let mut input:String = String::new();
     // Reads user input
@@ -81,12 +79,12 @@ fn main() {
         huffman_list = order_by_value_list(huffman_list);
     }
     let mut binary_codes:HashMap<char, u128> = HashMap::new();
-    for (key, value) in char_binary_codes{
+    for (key, value) in &char_binary_codes{
         let key_as_char = key.parse::<char>().unwrap();
         let mut value_as_string = String::new();
-        let mut value_as_binary:String = "0b";
+        let mut value_as_binary:String = String::from("");
         for char in value {
-            value_as_string.push(char);
+            value_as_string.push(*char);
         }
         for number in value_as_string.chars(){
             value_as_binary.push(number);
@@ -94,9 +92,20 @@ fn main() {
         let value_as_binary:u128 = value_as_binary.parse::<u128>().unwrap();
         binary_codes.insert(key_as_char, value_as_binary);
     }
-    for (key, value) in binary_codes{
+    for (key, value) in &binary_codes{
         println!("{} {}", key, value);
     }
+    let mut final_string_list = vec![];
+    for char in input_string.chars(){
+        let code = binary_codes[&char];
+        final_string_list.push(code)
+    }
+    let mut final_string_list_strings = vec![];
+    for char in final_string_list{
+        final_string_list_strings.push(char.to_string());
+    }
+    let final_string = final_string_list_strings.join("");
+    println!("{}", final_string);
 }
 
 fn single_char(og_string:&String) -> Vec<char>{
