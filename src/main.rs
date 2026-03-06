@@ -106,6 +106,22 @@ fn main() {
     }
     let final_string = final_string_list_strings.join("");
     println!("{} {}", final_string, final_string.len());
+    let final_string_b10 = i128::from_str_radix(&final_string, 2).unwrap();
+    let mut leading_zeros = 0;
+    for char in final_string.chars(){
+        if char == '0'{
+            leading_zeros = leading_zeros + 1;
+        } else  {
+            break;
+        }
+
+    }
+    let mut l_z_str = String::new();
+    for _i in 1..=leading_zeros{
+        l_z_str.push('0');
+    }
+    println!("{}{}",l_z_str,final_string_b10);
+
 }
 
 fn single_char(og_string:&String) -> Vec<char>{
