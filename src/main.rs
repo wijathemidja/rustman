@@ -105,7 +105,7 @@ fn main() {
         final_string_list_strings.push(char.to_string());
     }
     let final_string = final_string_list_strings.join("");
-    println!("{}", final_string);
+    println!("{} {}", final_string, final_string.len());
 }
 
 fn single_char(og_string:&String) -> Vec<char>{
@@ -131,6 +131,7 @@ fn single_char(og_string:&String) -> Vec<char>{
 
 fn order_by_value_list(list:Vec<Vec<String>>) -> Vec<Vec<String>>{
     let mut list_mut = list.clone();
+    list_mut.sort_by(|a,b| a[0].cmp(&b[0]));
     list_mut.sort_by(|a,b|a[1].trim().parse::<i32>().unwrap().cmp(&b[1].trim().parse::<i32>().unwrap()));
     list_mut.reverse();
     list_mut
