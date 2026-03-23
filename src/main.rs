@@ -1,8 +1,14 @@
-use std::{collections::HashMap, env::args, fs::{File, read_to_string}, io::Write, vec};
+use std::{
+    collections::HashMap,
+    env::args,
+    fs::{File, read_to_string},
+    io::Write,
+    vec,
+};
 fn main() {
+    // Collects arguments
     let args: Vec<String> = args().collect();
     if &args[1].trim().to_lowercase() == "encode" {
-        println!("Encoding");
         encode(args[2].to_string(), args[3].to_string());
     } else if &args[1].trim().to_lowercase() == "decode" {
         decode(args[2].to_string());
@@ -98,7 +104,6 @@ fn encode(input: String, path: String) {
     let mut hash_string = String::new();
     for (key, value) in &char_binary_codes {
         let val = value.iter().collect::<String>();
-        println!("{} {}", key, val);
         let string = String::from(format!("{} {}\n", key, val));
         hash_string.push_str(&string);
     }
@@ -219,18 +224,25 @@ fn input_to_file(input: String, path: String, rmt: bool) {
 }
 
 fn txt_to_rmt(path: String) {
+    // Gets the binary message file
     let msg_file = read_to_string(String::from(format!("{}msg.txt", path))).unwrap();
+    // Gets the hash file
     let hash_file = read_to_string(String::from(format!("{}hash.txt", path))).unwrap();
+    // Stitches said Strings from files together
     let rmt = String::from(format!("{}\n{}", msg_file, hash_file));
+    // Writes string to file (*.rmt)
     input_to_file(rmt, path, true);
 }
 
 fn rmt_to_txt(path: String) {
+    // Gets the rmt file
     let rmt = read_to_string(String::from(format!("{}.rmt", &path))).unwrap();
+    // Used for removing first line
     let mut index = 0;
     let mut hash_file = String::new();
     for lines in rmt.lines() {
         if index == 0 {
+            // Writes the msg file
             input_to_file(
                 lines.to_string(),
                 String::from(format!("{}msg", path)),
@@ -238,11 +250,14 @@ fn rmt_to_txt(path: String) {
             );
             index = 1;
         } else if index == 1 {
+            // Otherwise there is an empty line at the top of the hash file
             hash_file = lines.to_string();
             index = 2;
         } else {
+            // Then adds each line as a new line to the hash txt file
             hash_file = String::from(format!("{}\n{}", hash_file, lines));
         }
     }
+    // Writes the hash string to the hash txt file
     input_to_file(hash_file, String::from(format!("{}hash", path)), false);
 }
