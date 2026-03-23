@@ -123,11 +123,7 @@ fn encode(input:String, path:String) {
         final_string_list_strings.push(a);
     }
     let final_string = final_string_list_strings.join("");
-    let final_string_clone = final_string.clone();
-    let hash_string_clone = hash_string.clone();
-    input_to_file(final_string_clone, String::from(format!("{}msg",path)), false);
-    input_to_file(hash_string, String::from(format!("{}hash",path)), false);
-    let rmt = String::from(format!("{}\n{}",final_string, hash_string_clone));
+    let rmt = String::from(format!("{}\n{}",final_string, hash_string));
     input_to_file(rmt, path, true);
     let mut compressed_len = 0;
     for (key, value) in &char_binary_codes{
