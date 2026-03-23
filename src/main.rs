@@ -1,10 +1,6 @@
-use std::collections::HashMap;
-use std::env;
-use std::fs::File;
-use std::io::Write;
-use std::{fs, vec};
+use std::{collections::HashMap, env::args, fs::{File, read_to_string}, io::Write, vec};
 fn main() {
-    let args: Vec<String> = env::args().collect();
+    let args: Vec<String> = args().collect();
     if &args[1].trim().to_lowercase() == "encode" {
         println!("Encoding");
         encode(args[2].to_string(), args[3].to_string());
@@ -166,7 +162,7 @@ fn single_char(og_string: &String) -> Vec<char> {
 fn decode(path: String) {
     let mut binary_codes: HashMap<String, char> = HashMap::new();
     let rmt =
-        fs::read_to_string(String::from(format!("{}.rmt", path))).expect("Failed to read rmt file");
+        read_to_string(String::from(format!("{}.rmt", path))).expect("Failed to read rmt file");
     let mut first_line = true;
     let mut encoded = String::new();
     for lines in rmt.lines() {
@@ -223,14 +219,14 @@ fn input_to_file(input: String, path: String, rmt: bool) {
 }
 
 fn txt_to_rmt(path: String) {
-    let msg_file = fs::read_to_string(String::from(format!("{}msg.txt", path))).unwrap();
-    let hash_file = fs::read_to_string(String::from(format!("{}hash.txt", path))).unwrap();
+    let msg_file = read_to_string(String::from(format!("{}msg.txt", path))).unwrap();
+    let hash_file = read_to_string(String::from(format!("{}hash.txt", path))).unwrap();
     let rmt = String::from(format!("{}\n{}", msg_file, hash_file));
     input_to_file(rmt, path, true);
 }
 
 fn rmt_to_txt(path: String) {
-    let rmt = fs::read_to_string(String::from(format!("{}.rmt", &path))).unwrap();
+    let rmt = read_to_string(String::from(format!("{}.rmt", &path))).unwrap();
     let mut index = 0;
     let mut hash_file = String::new();
     for lines in rmt.lines() {
