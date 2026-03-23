@@ -12,7 +12,7 @@ fn main() {
     } else if &args[1].trim().to_lowercase() == "decode" {
         decode(args[2].to_string());
     } else if &args[1].trim().to_lowercase() == "convert" {
-        txt_to_rmt(args[3].to_string());
+        txt_to_rmt(args[2].to_string());
     }
     else {
         println!("Unknown operation");
@@ -212,10 +212,10 @@ fn input_to_file(input: String, path: String, rmt: bool) {
     if rmt == true {
         let mut file = File::create(String::from(format!("{}.rmt", path))).unwrap();
         file.write_all(input.as_bytes()).unwrap();
-    } else {}
-    let mut file = File::create(String::from(format!("{}.txt", path))).unwrap();
-    file.write_all(input.as_bytes()).unwrap();
-
+    } else {
+        let mut file = File::create(String::from(format!("{}.txt", path))).unwrap();
+        file.write_all(input.as_bytes()).unwrap();
+    }
 }
 
 fn txt_to_rmt(path: String) {
