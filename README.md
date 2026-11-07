@@ -1,3 +1,6 @@
+As of right now Rustman 2 is broken for some strings, i believe it is multi-line only. Something happened with multi-line integration and/or space integration that messed up, v weird as it worked before hand on my test strings. 
+Will fix eventually, but for now the project will be archived. Rustman was mainly for learning some basic Rust, which I did. 
+
 # rustman
 
 A huffman encoder built in rust
